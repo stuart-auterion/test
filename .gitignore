@@ -1,0 +1,4 @@
+build-*
+*.pro.user
+external/gstreamer*/**
+!external/gstreamer*/EMPTY

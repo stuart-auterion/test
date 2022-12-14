@@ -1,0 +1,3 @@
+[submodule "external/libtar"]
+	path = external/libtar
+	url = https://github.com/Parrot-Developers/libtar.git
