@@ -1,8 +1,16 @@
+
+#include <gst/gst.h>
+
+#include <QDir>
+#include <QElapsedTimer>
+#include <QFile>
 #include <QGuiApplication>
 #include <QObject>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQmlEngine>
+
+#include "videoManager.h"
 
 int main(int argc, char* argv[]) {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -19,6 +27,7 @@ int main(int argc, char* argv[]) {
             }
         },
         Qt::QueuedConnection);
+    initVideo();
 
     engine.load(url);
 

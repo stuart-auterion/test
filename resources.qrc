@@ -1,5 +1,6 @@
 <RCC>
     <qresource>
         <file>qml/main.qml</file>
+        <file>qml/VideoPlayer.qml</file>
     </qresource>
 </RCC>
