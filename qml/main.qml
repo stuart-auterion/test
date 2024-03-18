@@ -13,4 +13,19 @@ Window {
     height: 480
     visible: true
     title: qsTr("Hello World")
+//    Flow {
+//        spacing: 1
+//        anchors.fill: parent
+//        anchors.margins: 1
+//        VideoPlayer {
+//            type: VideoStream.TEST
+//            width: 400
+//            height: 480/640 * width
+//        }
+//        VideoPlayer {
+//            type: VideoStream.KLV_DECODE
+//            width: 400
+//            height: 9/16 * width
+//        }
+//    }
 }

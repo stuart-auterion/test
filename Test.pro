@@ -31,3 +31,29 @@ QML_DESIGNER_IMPORT_PATH =
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+linux {
+    linux-g++ | linux-g++-64 | linux-g++-32 | linux-clang {
+        CONFIG += LinuxBuild
+    } else : android-clang {
+        CONFIG += AndroidBuild
+    }
+}
+
+LinuxBuild {
+    CONFIG += link_pkgconfig
+    PKGCONFIG += zlib
+}
+
+AndroidBuild {
+    LIBS += -lz
+    QT += androidextras
+}
+
+INCLUDEPATH += \
+    $$PWD/external/microtar/src \
+
+SOURCES += \
+    $$PWD/external/microtar/src/microtar.c \
+
+ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
