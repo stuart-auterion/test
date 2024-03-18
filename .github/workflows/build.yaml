@@ -14,6 +14,13 @@ jobs:
         with:
           name: Hello
           path: "*.txt"
+  Release:
+    runs-on: ubuntu-20.04
+    steps:
+    needs: [Linux]
+    permissions:
+      contents: write
+    steps:
       - name: Get all build artifacts
         uses: actions/download-artifact@v4
         with:
