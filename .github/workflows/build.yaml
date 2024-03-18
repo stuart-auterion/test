@@ -16,7 +16,6 @@ jobs:
           path: "*.txt"
   Release:
     runs-on: ubuntu-20.04
-    steps:
     needs: [Linux]
     permissions:
       contents: write
