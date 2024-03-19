@@ -51,17 +51,22 @@ bool extract(const QString& inputFile, const QString& outputDirectory) {
         return false;
     }
     /* Un-gzip the file using zlib */
+    int count = 0;
     do {
+        count += bufferSize;
+        qDebug() << count << "/" << file.size();
         gzipData.avail_in = static_cast<unsigned>(file.read((char*)inputBuffer, bufferSize));
-        if (gzipData.avail_in == 0) {
-            break;
+        if (gzipData.avail_in <= 0) {
+            temp.close();
+            qDebug().noquote() << QString("Unable to read from file %1").arg(file.fileName());
+            return false;
         }
         gzipData.next_in = inputBuffer;
         do {
             gzipData.avail_out = bufferSize;
             gzipData.next_out = outputBuffer;
             result = inflate(&gzipData, Z_NO_FLUSH);
-            if (result != Z_OK && result != Z_STREAM_END) {
+            if (result != Z_OK && result != Z_STREAM_END && result != Z_BUF_ERROR) {
                 qDebug().noquote()
                     << QString("Unable to extract data with zlib (error %1)").arg(result);
                 return false;
@@ -154,13 +159,14 @@ int main(int argc, char* argv[]) {
 
     QElapsedTimer timer;
     timer.start();
-//    QString documents = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
-//    extract(QDir::cleanPath(documents + "/Auterion Mission Control/Plugins/ccast.amcplugin"),
-//            QDir::cleanPath(documents + "/Auterion Mission Control/Plugins/ccast"));
-        QString documents = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
-        extract(QDir::cleanPath(documents + "/ccast.amcplugin"), QDir::cleanPath(documents +
-        "/ccast"));
-    qDebug() << "Extraction took" << timer.elapsed();
+    //    QString documents = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+    //    extract(QDir::cleanPath(documents + "/Auterion Mission Control/Plugins/ccast.amcplugin"),
+    //            QDir::cleanPath(documents + "/Auterion Mission Control/Plugins/ccast"));
+    QString desktop = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    if (extract(QDir::cleanPath(desktop + "/CCAST_linux.amcplugin"),
+                QDir::cleanPath(desktop + "/ccast"))) {
+        qDebug() << "Extraction took" << timer.elapsed();
+    }
 
     engine.load(url);
 
