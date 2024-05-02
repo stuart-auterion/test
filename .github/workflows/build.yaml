@@ -12,8 +12,8 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - name: Hello 1
-        run: echo hello world
+      run: echo hello world
     - name: Hello 2
-        run: echo hello world
+      run: echo hello world
     - name: Hello 3
-        run: echo hello world
+      run: echo hello world
