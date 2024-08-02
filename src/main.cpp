@@ -1,7 +1,5 @@
 #include <QGuiApplication>
-#include <QObject>
 #include <QQmlApplicationEngine>
-#include <QQmlContext>
 #include <QQmlEngine>
 
 int main(int argc, char* argv[]) {
@@ -21,6 +19,5 @@ int main(int argc, char* argv[]) {
         Qt::QueuedConnection);
 
     engine.load(url);
-
     return app.exec();
 }
