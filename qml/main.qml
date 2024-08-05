@@ -4,12 +4,18 @@ import QtQuick.Window 2.15
 import QtLocation 5.15
 import QtPositioning 5.15
 
+import Map 1.0
+
 Window {
     id: root
     width: 810
     height: 480
     visible: true
     title: qsTr("Hello World")
+    Component.onCompleted: {
+        baseMap.zoomLevel = 1
+    }
+
     Rectangle {
         z: 100
         anchors.top: parent.top
@@ -25,75 +31,79 @@ Window {
             anchors.margins: parent.anchors.margins
             spacing: parent.anchors.margins
             ComboBox {
-                model: ["Custom Tiles", "MapBox"]
-                currentIndex: useCustomTiles ? 0 : 1
-                onCurrentIndexChanged: {
-                    useCustomTiles = (currentIndex === 0)
-                }
-            }
-            ComboBox {
-                enabled: !useCustomTiles
-                visible: enabled
                 width: parent.width
-                model: !useCustomTiles ? map.supportedMapTypes : []
+                model: baseMap.supportedMapTypes
                 textRole: "description"
                 onCurrentIndexChanged: {
-                    if (!useCustomTiles) {
-                        map.activeMapType = map.supportedMapTypes[currentIndex]
-                    }
+                    baseMap.activeMapType = baseMap.supportedMapTypes[currentIndex]
+                }
+            }
+            Button {
+                text: "Clear cache"
+                onClicked: {
+                    MapTileProvider.clearCache()
                 }
             }
         }
     }
-    property var map: loader.item
-    property bool useCustomTiles: true
-    onUseCustomTilesChanged: loader.reload()
-    Loader {
-        id: loader
+    Map {
+        id: baseMap
         anchors.fill: parent
-        sourceComponent: mapComponent
-        function reload() {
-            var center = map.center
-            var zoomLevel = map.zoomLevel
-            sourceComponent = undefined
-            sourceComponent = mapComponent
-            map.center = center
-            map.zoomLevel = zoomLevel
+        activeMapType: supportedMapTypes[0]
+        gesture.acceptedGestures: MapGestureArea.PinchGesture | MapGestureArea.PanGesture | MapGestureArea.PanGesture
+        plugin: Plugin {
+            id: mapboxglPlugin
+            name: "mapboxgl"
+            PluginParameter {
+                name: "mapboxgl.mapping.cache.size"
+                value: 1073741824
+            }
+            PluginParameter {
+                name: "mapboxgl.mapping.use_fbo"
+                value: false
+            }
+            // PluginParameter {
+            //     name: "mapboxgl.mapping.cache.directory"
+            //     value: MapTileProvider.cacheDirectory
+            // }
         }
     }
-    Component {
-        id: mapComponent
-        Map {
-            id: map
-            plugin: useCustomTiles ? customTilesPlugin : mapboxglPlugin
-            zoomLevel: 1
-            gesture.acceptedGestures: MapGestureArea.PinchGesture | MapGestureArea.PanGesture | MapGestureArea.PanGesture
-            activeMapType: supportedMapTypes[useCustomTiles ? supportedMapTypes.length - 1 : 0]
-        }
-    }
-    Plugin {
-        id: mapboxglPlugin
-        name: "mapboxgl"
-    }
-
-    Plugin {
-        id: customTilesPlugin
-        name: "osm"
-        PluginParameter {
-            name: "osm.mapping.cache.directory"
-            value: "/home/stuart/Desktop/cache"
-        }
-        PluginParameter {
-            name: "osm.mapping.offline.directory"
-            value: "/home/stuart/Desktop/tiles"
-        }
-        PluginParameter {
-            name: "osm.mapping.providersrepository.disabled"
-            value: true
-        }
-        PluginParameter {
-            name: "osm.mapping.custom.host"
-            value: "undefined"
+    Map {
+        id: customTilesMap
+        anchors.fill: parent
+        zoomLevel: baseMap.zoomLevel
+        center: baseMap.center
+        color: "transparent"
+        gesture.acceptedGestures: MapGestureArea.NoGesture
+        activeMapType: supportedMapTypes[supportedMapTypes.length - 1]
+        plugin: Plugin {
+            id: customTilesPlugin
+            name: "osm"
+            PluginParameter {
+                name: "osm.mapping.cache.directory"
+                value: MapTileProvider.cacheDirectory
+            }
+            PluginParameter {
+                name: "osm.mapping.custom.host"
+                value: MapTileProvider.address
+            }
+            // Turn off all other services
+            PluginParameter {
+                name: "osm.mapping.providersrepository.disabled"
+                value: true
+            }
+            PluginParameter {
+                name: "osm.places.host"
+                value: "undefined"
+            }
+            PluginParameter {
+                name: "osm.routing.host"
+                value: "undefined"
+            }
+            PluginParameter {
+                name: "osm.geocoding.host"
+                value: "undefined"
+            }
         }
     }
 }

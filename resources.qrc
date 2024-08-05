@@ -1,5 +1,6 @@
 <RCC>
     <qresource>
         <file>qml/main.qml</file>
+        <file>img/blankTile.png</file>
     </qresource>
 </RCC>

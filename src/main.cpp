@@ -2,6 +2,8 @@
 #include <QQmlApplicationEngine>
 #include <QQmlEngine>
 
+#include "MapTileProvider.h"
+
 int main(int argc, char* argv[]) {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
@@ -17,6 +19,8 @@ int main(int argc, char* argv[]) {
             }
         },
         Qt::QueuedConnection);
+
+    MapTileProvider mapTileProvider;
 
     engine.load(url);
     return app.exec();

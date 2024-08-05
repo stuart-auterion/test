@@ -11,12 +11,14 @@ QML_IMPORT_PATH +=  \
 
 SOURCES += \
     src/main.cpp \
+    src/MapTileProvider.cpp \
 
 INCLUDEPATH += \
     inc \
     external \
 
 HEADERS += \
+    src/MapTileProvider.h \
 
 RESOURCES += \
     resources.qrc
