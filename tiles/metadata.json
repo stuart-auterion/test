@@ -1,0 +1,10 @@
+{
+    "name": "Unnamed atlas", 
+    "format": "jpg", 
+    "bounds": "-180.000,-84.928,178.594,85.051", 
+    "minzoom": "0", 
+    "version": "1.3", 
+    "maxzoom": "19", 
+    "type": "baselayer", 
+    "description": "Unnamed atlas created on 2023-06-26 16:42:25 by MOBAC"
+}
