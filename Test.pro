@@ -1,4 +1,4 @@
-QT += quick
+QT += quick positioning
 CONFIG += c++11
 
 
@@ -11,12 +11,14 @@ QML_IMPORT_PATH +=  \
 
 SOURCES += \
     src/main.cpp \
+    src/LinuxGeoPositionInfoSource.cpp \
 
 INCLUDEPATH += \
     inc \
     external \
 
 HEADERS += \
+    src/LinuxGeoPositionInfoSource.h \
 
 RESOURCES += \
     resources.qrc

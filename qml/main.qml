@@ -1,11 +1,6 @@
 import QtQuick 2.15
-import QtQuick.Layouts 1.15
 import QtQuick.Window 2.15
-import QtQuick.Controls 2.15
-import Qt.labs.animation 1.0
-import QtQml.Models 2.15
-import QtGraphicalEffects 1.15
-//import Video 1.0
+import QtLocation 5.15
 
 Window {
     id: root
@@ -13,4 +8,39 @@ Window {
     height: 480
     visible: true
     title: qsTr("Hello World")
+
+    Map {
+        anchors.fill: parent
+        center: topMap.center
+        zoomLevel: topMap.zoomLevel
+        color: "transparent"
+        gesture.enabled: false
+        plugin: Plugin {
+            name: "mapboxgl"
+        }
+    }
+
+    Map {
+        anchors.fill: parent
+        center: topMap.center
+        zoomLevel: topMap.zoomLevel
+        color: "transparent"
+        gesture.enabled: false
+        activeMapType: supportedMapTypes[supportedMapTypes.length - 1]
+        plugin: Plugin {
+            name: "osm"
+            PluginParameter {
+                name: "osm.mapping.custom.host"
+                value: "https://tiles.openseamap.org/seamark/"
+            }
+        }
+    }
+    Map {
+        id: topMap
+        color: "transparent"
+        anchors.fill: parent
+        plugin: Plugin {
+            name: "itemsoverlay"
+        }
+    }
 }
