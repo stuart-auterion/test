@@ -46,10 +46,6 @@ jobs:
     steps:
       - name: Get all build artifacts
         uses: actions/download-artifact@v4
-        with:
-          name: |
-            Linux
-            Android
       - name: List
         run: |
           find . -name '*' -print
