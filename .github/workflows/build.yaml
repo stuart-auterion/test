@@ -51,8 +51,8 @@ jobs:
             Linux
             Android
       - name: List
-          run: |
-            find . -name '*' -print
+        run: |
+          find . -name '*' -print
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
