@@ -47,10 +47,10 @@ jobs:
       - name: Get all build artifacts
         uses: actions/download-artifact@v4
       - name: List
-        run: |
-          find . -name '*' -print
+        run: find . -name '*' -print
+      - name: compress artifacts into releaseable assets
+        run: find . -mindepth 1 -type d -exec zip -j -r {}.zip {} \;
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            **
+          files: **
