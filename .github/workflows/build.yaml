@@ -9,17 +9,34 @@ jobs:
     - name: Hello
       run: echo hello world
     - name: Create artifact
-      run: echo "hello world" > hello.txt
+      run: echo "linux-1" > linux-1.txt
     - name: Create artifact
-      run: echo "goodbye world" > goodbye.txt
+      run: echo "linux-2" > linux-2.txt
     - name: Upload actifact
       if: startsWith(github.ref, 'refs/tags/')
       uses: actions/upload-artifact@v4
       with:
-        name: Hello
+        name: Linux
         path: |
-          hello.txt
-          goodbye.txt
+          linux-1.txt
+          linux-2.txt
+  Android:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Hello
+      run: echo hello world
+    - name: Create artifact
+      run: echo "android-1" > android-1.txt
+    - name: Create artifact
+      run: echo "android-2" > android-2.txt
+    - name: Upload actifact
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/upload-artifact@v4
+      with:
+        name: Android
+        path: |
+          android-1.txt
+          android-2.txt
   Release:
     if: startsWith(github.ref, 'refs/tags/')
     needs: [Linux]
