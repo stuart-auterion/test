@@ -1,12 +1,7 @@
 name: Build
 on:
+  push:
   workflow_dispatch:
-    inputs:
-      test:
-        description: 'This is an option'
-        type: boolean
-        required: false
-        default: false
 jobs:
   Linux:
     runs-on: ubuntu-20.04
