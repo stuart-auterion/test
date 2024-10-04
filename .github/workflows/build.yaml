@@ -49,7 +49,9 @@ jobs:
       - name: List
         run: find . -name '*' -print
       - name: compress artifacts into releaseable assets
-        run: find . -mindepth 1 -type d -exec zip -j -r {}.zip {} \;
+        run: |
+          find . -mindepth 1 -type d -execdir rename "s/ /_/g" "{}" \;
+          find . -mindepth 1 -type d -exec zip -j -r $(echo {} | tr ' ' '-').zip {} \;
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
